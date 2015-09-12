@@ -59,6 +59,7 @@ Searchmodule.controller('search',function($scope,$http,$sce){
 	    $http.post(	"SearchServer.php" , stringToSend ).success(
 		    		function(response)
 		    		{
+						$scope.resultDeliveries = [];
 						//alert("entered");
 						//alert(response);
 						//document.write(response);

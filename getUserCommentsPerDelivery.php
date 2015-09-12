@@ -27,7 +27,7 @@ if ($result && $result->num_rows > 0){
 else
 {
 	//echo "No user comments in db. You can add/edit comments for this delivery right here.";
-	echo "No comments registered. \nYou can add/edit your comments right here..";
+	echo "comments";
 }
 ?>
 

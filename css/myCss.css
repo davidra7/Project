@@ -256,7 +256,7 @@
 
 
 
-/* --------- Onmouse over kbit show status testbox --------- */
+/* --------- Onmouse over kbit show status box --------- */
 .tooltip-wrap {
   position: relative;
 }
@@ -272,10 +272,10 @@
   
 }
 
-/* --------- End of onmouse over kbit show status testbox --------- */
+/* --------- End of onmouse over kbit show status box --------- */
 
 
-/* --------- Onmouse over delivery in side-flow show watched-status testbox --------- */
+/* --------- Onmouse over delivery in side-flow show watched-status box --------- */
 .tooltip-wrap2 {
   position: relative;
 }
@@ -293,7 +293,62 @@
 /*   font-size: 50%; */
   
 }
-/* --------- End of onmouse over delivery in side-flow show watched-status testbox --------- */
+/* --------- End of onmouse over delivery in side-flow show watched-status box --------- */
+
+
+
+/* --------- Onmouse over delivery in FLT show watched-status box --------- */
+.tooltip-wrap3 {
+  position: relative;
+}
+.tooltip-wrap3 .tooltip-content3 {
+  display: none;
+  position: absolute;
+}
+.tooltip-wrap3:hover .tooltip-content3 {
+  display: block;
+  margin-left: 9px;
+  height:40px; width:40px;
+/*   border:2px solid black; */
+/*   background-color: #b0c4de; */
+/*   font-size: 50%; */
+}
+.eye_size {
+	height:15px; width:32px;
+}
+
+/* --------- End of Onmouse over delivery in FLT show watched-status box --------- */
+
+
+
+
+
+
+.tooltip-wrap4 {
+  position: relative;
+}
+.tooltip-wrap4 .tooltip-content4 {
+  display: none;
+
+}
+.tooltip-wrap4:hover .tooltip-content4 {
+  display: inline;
+  /* margin-top: -27px; 
+  height:30px; width:20px;
+/*   border:2px solid black; */
+/*   background-color: #b0c4de; */
+/*   font-size: 50%; */
+}
+
+
+
+
+
+
+
+
+
+
 
 
 .delivery_status {

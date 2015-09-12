@@ -8,7 +8,9 @@ UserFlowModule.controller('userflow',function($scope,$http,$sce)
 	$scope.WishlistFlowsNameID = [];	// array of the name of the Wishlist flow
 	$scope.WishlistFlowsFlow = [];	// Array of the flow - each place is a flow(array)
 	
+	
 	$scope.CurrentIndex  = -1;
+	$scope.current_deliv_status_img = "Pic/eye_gray1.jpg";
 	
 	/* P E R S O N A L
 	 * Load the personal flow of the user 
@@ -113,6 +115,8 @@ UserFlowModule.controller('userflow',function($scope,$http,$sce)
     			}
 		);
 	}
+	
+	
 	$scope.MoveUp = function(idx,delivery)
 	{
 		//alert( $scope.ActiveTypeFlow[$scope.CurrentIndex][idx-1]);
@@ -181,6 +185,25 @@ UserFlowModule.controller('userflow',function($scope,$http,$sce)
 		);
 	
 		
+	}
+	
+	$scope.GetDeliveryWatchedStatus = function(name){
+
+		$http.post("getDeliveryWatchedStatus.php", {"delivery_name":name}).success(
+				function(response)
+				{
+					$scope.current_deliv_status_img = response;
+				});
+	}
+	
+	$scope.setDeliveryNameOnServer = function(name)
+	{
+		$http.post(	"SetDeliveryInSession.php" , { "d": name } ).success(
+		    		function(response)
+		    		{
+						//alert(response);
+		    		}
+			);
 	}
 	
 	

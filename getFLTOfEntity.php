@@ -83,7 +83,7 @@ else if($entity_name == "t01")
 			'name'=>"t01",
 			'type'=>"t",
 			'kbits_related'=>"k02, k03",
-			'deliveries_related'=>"d02, d04",
+			'deliveries_related'=>"d02,d04",
 			'terms'=>"t02,t03",
 			'scope'=>"s01",
 			)
@@ -96,7 +96,7 @@ else if($entity_name == "t02")
 			'name'=>"t02",
 			'type'=>"t",
 			'kbits_related'=>"k01",
-			'deliveries_related'=>"d01, d03",
+			'deliveries_related'=>"d01,d03",
 			'terms'=>"t01",
 			'scope'=>"s01, s02",
 			)

@@ -15,6 +15,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<link rel="stylesheet" href="css/bootstrap.css">
 	<link rel="stylesheet" href="css/global.css">
+	<link rel="stylesheet" href="css/myCss.css">
 	<script src="js/bootstrap.js"></script>
 	<script type="text/javascript" src="js/ShowUserFlows.js"></script> 
 
@@ -79,16 +80,26 @@
 				<img src="Pic/arrowright.jpg"></img>
 			</div>
 			<div class="modal-dialog panel-transparent" style="width:40%;float:left" data-ng-show="(CurrentIndex > -1)">
-				<div class="modal-content panel-q-transparent" style="text-align:center">
+				<div class="modal-content panel-q-transparent">
 					<div>
 						<label>Flow Name: <span data-ng-bind="ActiveTypeNameID[CurrentIndex].Name"></span></label>
 					</div>
 					<div data-ng-repeat="delivery in CurrentFlow">
-						<label> <span data-ng-bind="delivery"></span></label>
-						<a href="" data-ng-show="(ActiveTypeNameID == CustomFlowsNameID)" data-ng-click="MoveUp($index,delivery)"><img src="Pic\green.jpg"></a>
-						<a href="" data-ng-show="(ActiveTypeNameID == CustomFlowsNameID)" data-ng-click="MoveDown($index,delivery)"><img src="Pic\red.jpg"></a>
-						<a href="" data-ng-show="(ActiveTypeNameID == CustomFlowsNameID)" data-ng-click="Delete($index,delivery)"><img src="Pic\x.jpg"></a>
-						<br>
+						<div class="tooltip-wrap4" data-ng-mouseover="GetDeliveryWatchedStatus(delivery);" >
+							<div class="tooltip-content4" >
+		       					<img class="test" data-ng-src="{{current_deliv_status_img}}">
+		       				</div>
+							<div style = "display:inline">
+								<label> <a href="Delivery.php" data-ng-click="setDeliveryNameOnServer(delivery);"><span data-ng-bind="delivery"></span></a></label>
+							</div>
+							<div  style = "display:inline">
+								<a href="" data-ng-show="(ActiveTypeNameID == CustomFlowsNameID)" data-ng-click="MoveUp($index,delivery)"><img src="Pic\green.jpg"></a>
+								<a href="" data-ng-show="(ActiveTypeNameID == CustomFlowsNameID)" data-ng-click="MoveDown($index,delivery)"><img src="Pic\red.jpg"></a>
+								<a href="" data-ng-show="(ActiveTypeNameID == CustomFlowsNameID)" data-ng-click="Delete($index,delivery)"><img src="Pic\x.jpg"></a>
+							</div>
+
+
+						</div>
 					</div>
 				</div>
 			</div>

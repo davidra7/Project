@@ -21,5 +21,16 @@ UserFlowModule.controller('publicflow',function($scope,$http,$sce)
 	{
 		$scope.CurrentFlowArray = x.flow;
 	}
+	$scope.setDeliveryNameOnServer = function(name)
+	{
+
+		$http.post(	"SetDeliveryInSession.php" , { "d":name }
+	    ).success(
+		    		function(response)
+		    		{
+						
+		    		}
+			);
+	}
 	
 });

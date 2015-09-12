@@ -2,7 +2,7 @@
 var FlowModule = angular.module('project', []);
 FlowModule.controller('flow',function($scope,$http,$sce)
 {
-	$scope.deliv_status_img = "Pic/eye_gray1.jpg";
+	$scope.current_deliv_status_img = "Pic/eye_gray1.jpg";
 	$scope.ShowCustomFlowAddingFlag = false;
 	$scope.ShowEntireFlowAddingFlag = false;
 	$scope.ShowWishlistFlowAddingFlag = false;
@@ -23,10 +23,23 @@ FlowModule.controller('flow',function($scope,$http,$sce)
 					//document.write( JSON.stringify(response) );
 					//return;
 	    			// we get from the response in a json format  - the first place is our root.
+//	    			flow_dellivery_names = [];
     				for ( var i =0 ; i < response.length ; i++)
 					{
-    					$scope.flow.push(response[i]);
+    					$scope.flow[i] = new Object();
+    					$scope.flow[i].name = response[i];
+    					$scope.flow[i].watched_status_img = "Pic/eye_gray1.jpg";
+//    					flow_dellivery_names.push($scope.flow[i].name);
+//    					$scope.flow.push(response[i]);
 					}
+//    				alert(flow_dellivery_names);
+//    				$http.post(	"getWatchedStatusOfAllDeliveriesInFlow.php",flow_dellivery_names ).success(
+//    						function(response)
+//    						{
+//    							
+//    						}
+//    				);
+    				
 					// build the object
 					var SendFlow = {};
 					SendFlow.flow = $scope.flow;
@@ -85,7 +98,7 @@ FlowModule.controller('flow',function($scope,$http,$sce)
 	 * Build a struct containing the details of all final deliveries in the flow.
 	 */
 	function BuildDetailsStructFromJson(JsonObject, entities_details_array)
-	{
+	{	
 		index = $scope.index;
 		for ( var i = 0 ; i < JsonObject.length ; i++)
 		{
@@ -94,6 +107,7 @@ FlowModule.controller('flow',function($scope,$http,$sce)
 			entities_details_array[index].type = JsonObject[i].type;
 			entities_details_array[index].description = JsonObject[i].description;
 			entities_details_array[index].url = $sce.trustAsResourceUrl(JsonObject[i].url);
+			//entities_details_array[index].watched_status_img = "Pic/eye_gray1.jpg";
 			
 			entities_details_array[index].kbits_needed = [];
 			entities_details_array[index].kbits_provided = [];
@@ -154,6 +168,14 @@ FlowModule.controller('flow',function($scope,$http,$sce)
 				break;
 			}
 		}
+		// populate delivery status (per current user) 
+		$http.post("getDeliveryWatchedStatus.php", {"delivery_name":delivery_name}).success(
+		function(results)
+		{
+			$scope.current_deliv_status_img = results;
+		});
+		
+		//populate user comments per delivery
 		$http.post("getUserCommentsPerDelivery.php", {"data":delivery_name}).success(
 			function(results)
 			{
@@ -162,6 +184,7 @@ FlowModule.controller('flow',function($scope,$http,$sce)
 			  $scope.UserComments = results;
 			}
 		);
+		
 		//populate kbits status of current watched delivery
 		$http.post("getUserKbitsStatusPerDelivery.php", {"kbits_needed":$scope.entities_details[$scope.delivery_to_view_index].kbits_needed, "kbits_provided":$scope.entities_details[$scope.delivery_to_view_index].kbits_provided}).success(
 				function(results)
@@ -327,7 +350,7 @@ FlowModule.controller('flow',function($scope,$http,$sce)
 					$scope.delivery_to_view_index = -1;
 					for(var i=0 ; i < $scope.entities_details.length ; i++)
 					{
-						if($scope.entities_details[i].name == delivery_name)
+						if($scope.entities_details[i].name.localeCompare(delivery_name) == 0)
 						{
 							$scope.delivery_to_view_index = i;
 							break;
@@ -339,6 +362,14 @@ FlowModule.controller('flow',function($scope,$http,$sce)
 						$scope.delivery_to_view_index = $scope.index;
 						$scope.index += 1;
 					}
+					
+						// populate delivery status (per current user) 
+						$http.post("getDeliveryWatchedStatus.php", {"delivery_name":delivery_name}).success(
+						function(results)
+						{
+							$scope.current_deliv_status_img = results;
+						});
+					
 						// get user comments per this delivery from our db
 						$http.post("getUserCommentsPerDelivery.php", {"data":delivery_name}).success(
 							function(results)
@@ -346,6 +377,7 @@ FlowModule.controller('flow',function($scope,$http,$sce)
 								$scope.UserComments = results;
 							}
 						);
+						
 						// populate kbits_status per current presented delivery
 						$http.post("getUserKbitsStatusPerDelivery.php", {"kbits_needed":$scope.entities_details[$scope.delivery_to_view_index].kbits_needed, "kbits_provided":$scope.entities_details[$scope.delivery_to_view_index].kbits_provided}).success(
 								function(results)
@@ -428,6 +460,10 @@ FlowModule.controller('flow',function($scope,$http,$sce)
 		    		function(response)
 		    		{
 		    			alert(response);
+						if (response == "Added")
+						{
+							$scope.ShowEntireFlowAddingFlag = !$scope.ShowEntireFlowAddingFlag;
+						}
 		    		}
 			);
 		}
@@ -445,6 +481,10 @@ FlowModule.controller('flow',function($scope,$http,$sce)
 		    		function(response)
 		    		{
 		    			alert(response);
+						if(response == "Added")
+						{
+							$scope.ShowWishlistFlowAddingFlag = !$scope.ShowWishlistFlowAddingFlag;
+						}
 		    		}
 			);
 		}
@@ -575,16 +615,32 @@ FlowModule.controller('flow',function($scope,$http,$sce)
 	}
 	
 	$scope.GetDeliveryWatchedStatus = function(delivery_name){
-		$http.post("getSingleKbitStatus.php", {"kbit_name":kbit_name}).success(
+		$http.post("getDeliveryWatchedStatus.php", {"delivery_name":delivery_name}).success(
 				function(results)
 				{
-					
+					for(var j=0; j < $scope.flow.length ; j++)
+					{
+						if($scope.flow[j].name.localeCompare(delivery_name) == 0)
+						{
+							$scope.flow[j].watched_status_img = results;
+						}
+					}
 				});
 	}
 	
 	$scope.MarkAsWatched = function(delivery_name){
-		$scope.deliv_status_img = "Pic/eye_blue1.jpg";
+		$http.post("MarkDeliveryWatchedStatus.php", {"delivery_name":delivery_name}).success(
+				function(results)
+				{
+					$scope.current_deliv_status_img = results;
+				});
 	}
-	
+	$scope.GetDeliveryInFLTWatchedStatus = function(delivery_name){
+		$http.post("getDeliveryWatchedStatus.php", {"delivery_name":delivery_name}).success(
+				function(results)
+				{
+					$scope.FLT_deliv_status_img = results;
+				});
+	}
 	
 });

@@ -75,7 +75,7 @@
 							
 						</tr>
 						<tr style="text-align:left" data-ng-repeat="x in CurrentFlowArray">
-							<td style="text-align: center"><span data-ng-bind="x"></span>
+							<td style="text-align: center"><a href="Delivery.php" data-ng-click="setDeliveryNameOnServer(x);"><span data-ng-bind="x"></a></span>
 						</tr>	
 					</table>
 				</div>

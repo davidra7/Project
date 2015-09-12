@@ -77,28 +77,28 @@ $dummy = array(
 				'parent'=>null
 		),
 		array(
-		'name'=>"d07",
-		'type'=>"d",
-		'description'=>'d07_description',
-		'url'=>'http://www.youtube.com/embed/Ys3hDAdJBcc',
-		'kbits_needed'=>"k01,k03",
-		'kbits_provided'=>"k04,k07,k02",
-		'deliveries_related'=>"d02,d03",
-		'terms'=>"t01,t03",
-		'scope'=>"s01",
-		'parent'=>null
+			'name'=>"d07",
+			'type'=>"d",
+			'description'=>'d07_description',
+			'url'=>'http://www.youtube.com/embed/Ys3hDAdJBcc',
+			'kbits_needed'=>"k01,k03",
+			'kbits_provided'=>"k04,k07,k02",
+			'deliveries_related'=>"d02,d03",
+			'terms'=>"t01,t03",
+			'scope'=>"s01",
+			'parent'=>null
 		),
 		array(
-		'name'=>"d06",
-		'type'=>"d",
-		'description'=>'d06_description',
-		'url'=>'http://www.youtube.com/embed/21w79pFWoRI',
-		'kbits_needed'=>"k01,k02,k03,k04",
-		'kbits_provided'=>"k07",
-		'deliveries_related'=>"d02,d03",
-		'terms'=>"t02,t03",
-		'scope'=>"s01,s02",
-		'parent'=>null
+			'name'=>"d06",
+			'type'=>"d",
+			'description'=>'d06_description',
+			'url'=>'http://www.youtube.com/embed/21w79pFWoRI',
+			'kbits_needed'=>"k01,k02,k03,k04",
+			'kbits_provided'=>"k07",
+			'deliveries_related'=>"d02,d03",
+			'terms'=>"t02,t03",
+			'scope'=>"s01,s02",
+			'parent'=>null
 		)
 );
 

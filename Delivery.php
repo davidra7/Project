@@ -11,7 +11,7 @@
 	if ( !isset( $_SESSION['ID'] ))
 	{
 		$_SESSION['ID'] = null;
-		//header('Location: search.php');
+		header('Location: search.php');
 	}
 
 	
@@ -20,19 +20,20 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<link rel="stylesheet" href="css/global.css">
 	<script src="js/bootstrap.js"></script>
-	<script type="text/javascript" src="js/Flows.js"></script> 
+	<script type="text/javascript" src="js/Delivery.js"></script> 
 	<script type="text/javascript" src="js/EntityDetails.js"></script> 
 	<title>Insert title here</title>
 </head>
-<body data-ng-app="project"  data-ng-controller="flow" >
+<body data-ng-app="project"  data-ng-controller="delivery" >
 	<div class="container-fluid">
 		<!-- header -->
 		<div>
 			<ul class="nav nav-tabs"  >
 				<li><label>Welcome <?php echo $_SESSION['Username'] ?></label> </li>
-				<li class="active" style="margin-left: 30%;"><a href="Search.php">Search</a></li>
+				<li  style="margin-left: 30%;"><a href="Search.php">Search</a></li>
 				<li><a href="UserFlows.php">User Flows</a></li>
 				<li><a href="PublicFlows.php">Public Flows</a></li>
+				<li class="active"><a href="#">Delivery</a></li>
 				<!--Logout button -->
 				<li style="float:right">
 					<form method="POST" action="search.php">
@@ -42,60 +43,18 @@
 			</ul>
 		</div>
 		<!-- End Header -->
-		
-		<!-- Add to personal flow and Wishlist flow Buttons -->
-		<div>
-			<div style="float:left;">
-				<div style="float:left">
-					<button class="btn btn-primary btn-xs" data-ng-click="SaveFlow(flow,false)">Add to Personal Flows</button>
-				</div>
-				<div class="form-group form-inline" data-ng-show="ShowEntireFlowAddingFlag" style="float:left;">
-						<input class="form-control input-xs" type="text" data-ng-model="ShowEntireFlowName" placeholder="Flow Name" required />
-						<button class="btn btn-default btn-xs" data-ng-click="SaveFlow(flow,true)">Save</button>
-				</div>
-			</div>
-			<!--  Wishlist Flow -->
-			<div style="float:left;margin-left:1em " >
-				<div style="float:left;">
-					<button class="btn btn-primary btn-xs" data-ng-click="SaveWishlist(flow,false)" >Add to Wishlist</button>
-				</div>
-				<div class="form-group form-inline"data-ng-show="ShowWishlistFlowAddingFlag" style="float:left;">
-						<input type="text" class="form-control input-xs" data-ng-model="ShowWishlistFlowName" placeholder="Flow Name" required />
-						<button class="btn btn-default btn-xs" data-ng-click="SaveWishlist(flow,true)">Save</button>
-				</div>
-			</div>
-			<!--  end Wishlist Flow -->
-		</div>
-		<!-- end Personal Flow and Wishlist Flow button -->
-		<br><br>
-		<!-- Flow display in the left side -->
-	    <div style="width:4.5%;float:left;display:inline-block;">
-    		<br>
-	       	<div data-ng-repeat="x in flow" >
-		       <img alt="" src="Pic/arrowdown.jpg">
-		       <br>
-		       <div class="tooltip-wrap2" style="text-align:center">
-		       		<a href="#"><Label ng-mouseover="GetDeliveryWatchedStatus(x.name)" style="margin:10%" data-ng-click="PressedDeliveryInFlow(x.name)" ><span data-ng-bind="x.name" ></span></Label></a>
-		       		<div class="tooltip-content2">
-		       			<!-- <img class="test" data-ng-src={{deliv_status_img}} /> -->
-		       			<img class="test" data-ng-src={{x.watched_status_img}}>
-		       		</div>
-		       	</div>
-	       	</div>
-	       	<br>
-	    </div>
-		<br>
+	
 		<!-- Primary window -->
-		<div class="modal-dialog panel-transparent" style="width:80%;margin-top:0cm" data-ng-show="show_delivery_flag"><!-- more details --> 
+		<div class="modal-dialog panel-transparent" style="width:80%;margin-top:0cm" ><!-- more details --> 
 			<div class="modal-content panel-q-transparent">
 				<div class="modal-header">
-					<button class="delivery_status" data-ng-click="MarkAsWatched(entities_details[delivery_to_view_index].name)"> <img data-ng-src={{current_deliv_status_img}} /></button>
-					<h1 class="text-center">{{ entities_details[delivery_to_view_index].name }} <!--, Type: <span data-ng-bind="entities_details[delivery_to_view_index].type" ></span> --></h1>
+					<button class="delivery_status" data-ng-click="MarkAsWatched(entities_details.name)"> <img data-ng-src={{current_deliv_status_img}} /></button>
+					<h1 class="text-center">{{ entities_details.name }} <!--, Type: <span data-ng-bind="entities_details.type" ></span> --></h1>
 				</div>
 				<div> <!-- upper side of the window -->
 					<!-- Description -->
 					<div> 
-						<label class="text-center">Description : <span data-ng-bind="entities_details[delivery_to_view_index].description" ></span></label>
+						<label class="text-center">Description : <span data-ng-bind="entities_details.description" ></span></label>
 					</div>
 					<!-- End Description -->
 					<!-- Display of kbits needed,provided term and scope -->
@@ -103,7 +62,7 @@
 						<div>
 							<label class="text-center">Kbits_needed:</label>
 						</div>
-						<div class="hoffset1" data-ng-repeat="x in entities_details[delivery_to_view_index].kbits_needed" >
+						<div class="hoffset1" data-ng-repeat="x in entities_details.kbits_needed" >
 							<!-- <button type="button" class="btn btn-danger" data-ng-bind="x" data-ng-click="ChangeKbitStatus(x,1)"></button>	-->
 							<span class="kbit_style" data-ng-bind="x.name" ></span>
 							<button class="btn_kbit_v_not_pressed" data-ng-click="MarkKbit('v', x.name, x.index, 'needed')" data-ng-hide="x.is_status_v">V</button>
@@ -117,7 +76,7 @@
 						<div>
 							<label class="text-center">Kbits_provided:</label>
 						</div>
-						<div class="hoffset1" data-ng-repeat="x in entities_details[delivery_to_view_index].kbits_provided" >
+						<div class="hoffset1" data-ng-repeat="x in entities_details.kbits_provided" >
 							<span class="kbit_style" data-ng-bind="x.name" ></span>
 							<button class="btn_kbit_v_not_pressed btn-default" data-ng-click="MarkKbit('v', x.name, x.index, 'provided')" data-ng-hide="x.is_status_v">V</button>
 							<button class="btn btn_kbit_v_pressed disabled btn-default" data-ng-show="x.is_status_v">V</button>
@@ -156,19 +115,19 @@
 								<div>
 									<textarea data-ng-model="UserComments" style="width:95%;height:90px;background-color:#D0F18F;color:#53760D;font:16px/24px cursive; resize: none;" name="comments" id="comments"></textarea>
 								</div>
-								<button style="float:right" class="btn btn-default " data-ng-click="setUserCommentsPerDelivery(entities_details[delivery_to_view_index].name, UserComments)">Submit Comment</button>
+								<button style="float:right" class="btn btn-default " data-ng-click="setUserCommentsPerDelivery(entities_details.name, UserComments)">Submit Comment</button>
 							<br><br>
 						</div>
 						<!-- Deliveries Related & terms & scope -->
 						<div>
 							<div >
-								<label class="text-center">Deliveries_related: <span data-ng-bind="entities_details[delivery_to_view_index].deliveries_related" ></span></label>
+								<label class="text-center">Deliveries_related: <span data-ng-bind="entities_details.deliveries_related" ></span></label>
 							</div>
 							<div>
-								<label class="text-center">Terms: <span data-ng-bind="entities_details[delivery_to_view_index].terms" ></span></label>	
+								<label class="text-center">Terms: <span data-ng-bind="entities_details.terms" ></span></label>	
 							</div>
 							<div>
-								<label class="text-center">Scope: <span data-ng-bind="entities_details[delivery_to_view_index].scope" ></span></label>
+								<label class="text-center">Scope: <span data-ng-bind="entities_details.scope" ></span></label>
 							</div>
 						</div>
 					</div>
@@ -184,26 +143,26 @@
 					<div class="tree" style="margin:auto;">
 						<ul>
 							<li>
-								<a ><span data-ng-bind="entities_details[delivery_to_view_index].name" ></span></a>
+								<a ><span data-ng-bind="entities_details.name" ></span></a>
 								<ul>
-									<li data-ng-repeat="x in entities_details[delivery_to_view_index].kbits_needed">
+									<li data-ng-repeat="x in entities_details.kbits_needed">
 										<a ng-click="ShowEntityFirstLevelTree(x.name, 'kbit')" style="background-color:#FF9999" ><span data-ng-bind="x.name" ></span></a>
 									</li>
-									<li data-ng-repeat="x in entities_details[delivery_to_view_index].kbits_provided">
+									<li data-ng-repeat="x in entities_details.kbits_provided">
 										<a ng-click="ShowEntityFirstLevelTree(x.name, 'kbit')" style="background-color:#66FF66"><span data-ng-bind="x.name" ></span></a>
 									</li>
-									<li data-ng-repeat="x in entities_details[delivery_to_view_index].deliveries_related">
+									<li data-ng-repeat="x in entities_details.deliveries_related">
 									<div class="tooltip-wrap3">
-										<a href="#" ng-mouseover="GetDeliveryInFLTWatchedStatus(x)" style="background-color:#00CCFF"><span data-ng-bind="x" ng-click="PressedDeliveryNotInFlow(x)"></span></a>
+										<a href="Delivery.php" ng-mouseover="GetDeliveryInFLTWatchedStatus(x)" data-ng-click="setDeliveryNameOnServer(x)" style="background-color:#00CCFF"><span data-ng-bind="x"></span></a>
 										<div class="tooltip-content3">
 												<img class="eye_size" data-ng-src={{FLT_deliv_status_img}}>
 											</div>
 										</div> 
 									</li>
-									<li data-ng-repeat="x in entities_details[delivery_to_view_index].terms">
+									<li data-ng-repeat="x in entities_details.terms">
 										<a ng-click="ShowEntityFirstLevelTree(x, 'term')" style="background-color:#FFCC00"><span data-ng-bind="x" ></span></a>
 									</li>
-									<li data-ng-repeat="x in entities_details[delivery_to_view_index].scope">
+									<li data-ng-repeat="x in entities_details.scope">
 										<a ng-click="ShowEntityFirstLevelTree(x, 'scope')" style="background-color:#CC99CC"><span data-ng-bind="x" ></span></a>
 									</li>
 								</ul>
@@ -236,7 +195,7 @@
 										</li>
 										<li data-ng-repeat="x in entity_to_view_flt.deliveries_related">
 										<div class="tooltip-wrap3">
-											<a href="#" ng-mouseover="GetDeliveryInFLTWatchedStatus(x)" style="background-color:#00CCFF"><span data-ng-bind="x" ng-click="PressedDeliveryNotInFlow(x)"></span></a>
+											<a href="Delivery.php" ng-mouseover="GetDeliveryInFLTWatchedStatus(x)" style="background-color:#00CCFF"><span data-ng-bind="x" data-ng-click="setDeliveryNameOnServer(x)"></span></a>
 											<div class="tooltip-content3">
 												<img class="eye_size" data-ng-src={{FLT_deliv_status_img}}>
 											</div>
@@ -256,7 +215,7 @@
 				</div>
 				<br><br><br>
 				<div style="text-align:center">
-					<iframe style="width:70%;height:500px;" data-ng-src="{{ entities_details[delivery_to_view_index].url }}"></iframe>
+					<iframe style="width:70%;height:500px;" data-ng-src="{{ entities_details.url }}"></iframe>
 					
 				</div>
 				
